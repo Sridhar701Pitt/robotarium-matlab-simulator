@@ -161,7 +161,7 @@ for i = 1:iterations
     % does not change size).
 
     marker_size_goal = num2cell(ones(1,N)*determine_marker_size(r, 0.20));
-    [d.MarkerSize] = marker_size_goal{:};
+    %[d.MarkerSize] = marker_size_goal{:};
     marker_size_robot = num2cell(ones(1,N)*determine_robot_marker_size(r));
     [g.MarkerSize] = marker_size_robot{:};
     font_size = determine_font_size(r, 0.05);
