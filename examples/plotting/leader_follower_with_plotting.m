@@ -33,7 +33,7 @@ state = 1;
 
 % These are gains for our formation control algorithm
 formation_control_gain = 5;
-desired_distance = 0.3;
+desired_distance = 0.2;
 
 %% Grab tools we need to convert from single-integrator to unicycle dynamics
 
@@ -44,7 +44,7 @@ uni_barrier_cert = create_uni_barrier_certificate_with_boundary();
 % Single-integrator position controller
 leader_controller = create_si_position_controller('XVelocityGain', 0.8, 'YVelocityGain', 0.8, 'VelocityMagnitudeLimit', 0.08);
 
-waypoints = [-1 0.8; -1 -0.8; 1 -0.8; 1 0.8]';
+waypoints = [0.8 0; 0.565 0.565; 0 0.8; -0.565 0.565;-0.8 0; -0.565 -0.565; 0 -0.8; 0.565 -0.565]';
 close_enough = 0.03;
 
 %% Plotting Setup
@@ -52,7 +52,7 @@ close_enough = 0.03;
 % Color Vector for Plotting
 % Note the Robotarium MATLAB instance runs in a docker container which will 
 % produce the same rng value every time unless seeded by the user.
-CM = ['k','b','r','g'];
+CM = ['k','b','r','g','y','w','c','m'];
 
 %Marker, font, and line sizes
 marker_size_goal = determine_marker_size(r, 0.20);
@@ -142,6 +142,26 @@ for t = 1:iterations
         case 4
             dxi(:, 1) = leader_controller(x(1:2, 1), waypoint);
             if(norm(x(1:2, 1) - waypoint) < close_enough)
+                state = 5;
+            end
+        case 5
+            dxi(:, 1) = leader_controller(x(1:2, 1), waypoint);
+            if(norm(x(1:2, 1) - waypoint) < close_enough)
+                state = 6;
+            end
+        case 6
+            dxi(:, 1) = leader_controller(x(1:2, 1), waypoint);
+            if(norm(x(1:2, 1) - waypoint) < close_enough)
+                state = 7;
+            end
+        case 7
+            dxi(:, 1) = leader_controller(x(1:2, 1), waypoint);
+            if(norm(x(1:2, 1) - waypoint) < close_enough)
+                state = 8;
+            end
+        case 8
+            dxi(:, 1) = leader_controller(x(1:2, 1), waypoint);
+            if(norm(x(1:2, 1) - waypoint) < close_enough)
                 state = 1;
             end
     end
@@ -188,7 +208,7 @@ for t = 1:iterations
     % does not change size).
 
     marker_size_goal = num2cell(ones(1,length(waypoints))*determine_marker_size(r, 0.20));
-    [g.MarkerSize] = marker_size_goal{:};
+    %[g.MarkerSize] = marker_size_goal{:};
     font_size = determine_font_size(r, 0.05);
     leader_label.FontSize = font_size;
     
